@@ -1,0 +1,103 @@
+.body {
+    position: fixed;
+    inset: 0; /* shorthand for top: 0; right: 0; bottom: 0; left: 0 */
+    display: flex;
+    justify-content: center; /* center horizontally */
+    align-items: center;     /* center vertically */
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 999;
+}
+.modal {
+    background-color: white;
+    width: 100%;
+    max-width: 1024px; /* same as Tailwind's max-w-4xl */
+    height: 80vh;
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+.post {
+    width: 50%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.image{
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+.modal-content{
+    width: 50%;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.modal-content-inner {
+    padding: 16px;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #262626;
+}
+
+.post-header {
+margin-bottom: 20px;
+}
+
+.username {
+font-weight: bold;
+}
+
+.verified {
+color: #0095f6;
+}
+
+.timestamp {
+color: #8e8e8e;
+font-size: 12px;
+margin-top: 4px;
+}
+
+.comments {
+border-top: 1px solid #dbdbdb;
+padding-top: 12px;
+}
+
+.comment {
+margin-bottom: 16px;
+position: relative;
+padding-right: 28px; /* space for the button */
+}
+
+.comment-username {
+font-weight: 600;
+margin-right: 4px;
+}
+
+.comment-footer {
+font-size: 12px;
+color: #8e8e8e;
+margin-top: 4px;
+}
+
+.ai-button {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    border: black;
+    border-radius:50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+    background-color: #90D5FF;
+}
+
+
+.comment:hover .ai-button {
+    display: inline;
+}

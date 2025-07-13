@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Comment Classification: Claim or Opinion</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      function analyzeComment() {
+        let comment = document.getElementById('analyzedComment').innerText
+        console.log(comment)
+        const data = {
+          text: comment
+        }
+        axios.post("http://localhost:8000/predict", data, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          .then(function(response){
+            console.log("Response:", response.data);
+            console.log("Response type:", typeof(response.data));
+            results = response.data
+            let highlightedHTML = "";
+            for (const key in results){
+              value = results[key]
+              let color;
+              if (value["Claim or Opinion"] === 'opinion'){
+                color = "#33e9ff";
+              }
+              else if (value["Claim or Opinion"] === 'claim'){
+                if (value["True or False"] === 'True'){
+                  color = "#9fff33";
+                  console.log(value["True or False"])
+                }
+                else if (value["True or False"] === 'False'){
+                  color = "#ff3333";  // 🟥 False
+                  console.log(value["True or False"])
+                }
+                else{
+                  color = "transparent";
+                }
+              }
+              highlightedHTML += `<span style="background-color: ${color}; padding: 2px 4px; border-radius: 4px; display: inline-block; margin: 2px 0;">${key.trim()}.</span> `;
+            }
+            console.log("highlightedHTML")
+            analyzedComment.innerHTML = highlightedHTML.trim();
+            console.log("Doneeee")
+          })
+          .catch(function(error){
+            console.error("Error:", error);
+            alert("Something went wrong: " + error.message)
+          })
+        console.log("Analyze Comment Clicked!")
+      }
+    </script>
+</head>
+<body class = "body">
+    <div class = "modal">
+        <div class="post">
+            <img src="./src/images/animalfarm.jpg" alt="Post" class="image" />
+          </div>
+          <div class="modal-content">
+            <div class="modal-content-inner">
+                <div class="post-header">
+                  <div class="username">
+                    <strong>booklover123</strong> <span class="verified">✔️</span>
+                  </div>
+                  <p>
+                    Hey everyone!<br><br>
+                    This week we are sharing our new book Animal Farm by George Orwell! We’ve been pouring our hearts into this journey since 2014, and your support has been the driving force behind everything we do. If you’ve loved what we create and want to help us keep going, consider joining us on Patreon. Every bit of support means the world and helps us continue doing what we love. Thank you for being part of this success!<br><br>
+                    🔗 [ Link in Bio ]
+                  </p>
+                  <div class="timestamp">20w</div>
+                </div>
+              
+                <div class="comments">
+                  <div class="comment">
+                    <div class = "comment-text">
+                        <span class="comment-username">animalfarmlover1</span>
+                        Exciting stuff!! 👏👏👏👏👏👏❤️❤️❤️ Keep up the good work!
+                        <div class="comment-footer">
+                            <span>2w</span> · <span>2 likes</span> · <span>Reply</span>
+                        </div>
+                    </div>
+                    <button class="ai-button" title="Reply with AI">✨</button>
+                  </div>
+              
+                  <div class="comment">
+                    <div class="comment-text">
+                        <span class="comment-username">animalfarmlover2</span>
+                        <span id = "analyzedComment" >The pigs took control of the farm after the rebellion and began making all the decisions. Snowball was not driven out of the farm by Napoleon’s dogs during a public meeting. The commandment that All animals are equal was eventually changed to include but some animals are more equal than others. I don't think Snowball was ever a real threat to the other animals. I believe the story shows how revolutions can go wrong when power isn’t shared!</span>
+                        <div class="comment-footer">
+                        <span>Just now</span>
+                        </div>
+                    </div>
+                    <button id = "buttonAnalyze" class="ai-button" title="Fact-check comment" onclick="analyzeComment()">✨</button>
+                </div>
+              </div>
+          </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</html>
